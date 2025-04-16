@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speak to Lead - Transformez vos idées en actions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['"SF Pro Display"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'surface-white': '#FFFFFF',
+                        'surface-light': '#F8FAF7',
+                        'text-primary': '#1A1A1A',
+                        'text-secondary': '#737373',
+                        'accent': '#34C759',
+                        'accent-light': '#F0F9F2',
+                        'neutral': '#FCFEFC',
+                    },
+                    fontSize: {
+                        'display': ['56px', '1.1'],
+                        'title': ['40px', '1.2'],
+                        'subtitle': ['28px', '1.3'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(248, 250, 247, 0.3);
+        }
+        
+        .hero-background {
+            background-image: url('./bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(252, 254, 252, 0.5) 0%, rgba(252, 254, 252, 0.7) 100%);
+            opacity: 0.9;
+            border: 1px solid rgba(248, 250, 247, 0.3);
+        }
+        
+        .smooth-shadow {
+            box-shadow: 0 8px 32px -8px rgba(26, 26, 26, 0.06);
+        }
+        
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px -8px rgba(26, 26, 26, 0.08);
+        }
+
+        .button-effect {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .button-effect:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px -2px rgba(52, 199, 89, 0.2);
+        }
+
+        @media (max-width: 640px) {
+            .glass-morphism {
+                backdrop-filter: blur(10px) saturate(160%);
+                -webkit-backdrop-filter: blur(10px) saturate(160%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral font-sans text-text-primary antialiased min-h-screen selection:bg-accent-light selection:text-accent">
+    <div class="max-w-7xl mx-auto px-0 sm:px-8 lg:px-12 py-20 space-y-24">
+        <!-- Hero Section -->
+        <div class="relative rounded-[32px] overflow-hidden">
+            <div class="absolute inset-0 hero-background"></div>
+            <div class="relative hero-overlay p-12 sm:p-16 lg:p-20">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h1 class="text-display font-semibold text-text-primary mb-6 tracking-tight">Speak to Lead</h1>
+                    <p class="text-subtitle text-text-secondary font-light mb-12 leading-relaxed">Améliorez vos compétences orales en anglais</p>
+                    <button class="button-effect bg-accent text-surface-white px-12 py-5 rounded-full text-lg font-medium">
+                        Rejoindre le programme
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program Overview -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="glass-morphism p-12 rounded-[24px] hover-lift smooth-shadow">
+                <h2 class="text-title font-semibold mb-8">Le Programme</h2>
+                <div class="space-y-6 text-text-secondary text-lg">
+                    <p class="leading-relaxed">Un programme intensif de 8 semaines pour maîtriser l'art de la communication en anglais.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-accent text-sm"></i>
+                            </div>
+                            2 heures par semaine
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-users text-accent text-sm"></i>
+                            </div>
+                            Groupes de 10-15 personnes
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-star text-accent text-sm"></i>
+                            </div>
+                            Suivi personnalisé
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="glass-morphism p-12 rounded-[24px] hover-lift smooth-shadow">
+                <h2 class="text-title font-semibold mb-8">Objectifs</h2>
+                <ul class="space-y-6 text-text-secondary text-lg">
+                    <li class="flex items-center">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-accent text-sm"></i>
+                        </div>
+                        Fluidité et confiance en anglais
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-accent text-sm"></i>
+                        </div>
+                        Communication efficace et persuasion
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-check text-accent text-sm"></i>
+                        </div>
+                        Collaboration en environnement multilingue
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Program Details -->
+        <div class="glass-morphism rounded-[24px] p-12 sm:p-16">
+            <div class="grid md:grid-cols-3 gap-12 lg:gap-16">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
+                        <i class="fas fa-graduation-cap text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-subtitle font-semibold mb-4">Méthode</h3>
+                    <p class="text-text-secondary text-lg leading-relaxed">Mises en situation réelles et travaux en groupe interactifs</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
+                        <i class="fas fa-comments text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-subtitle font-semibold mb-4">Thèmes</h3>
+                    <p class="text-text-secondary text-lg leading-relaxed">Leadership, communication interculturelle, résolution de conflits</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
+                        <i class="fas fa-chart-line text-2xl text-accent"></i>
+                    </div>
+                    <h3 class="text-subtitle font-semibold mb-4">Progression</h3>
+                    <p class="text-text-secondary text-lg leading-relaxed">Évaluation continue et feedback personnalisé</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center glass-morphism rounded-[32px] p-16 sm:p-20">
+            <h2 class="text-title font-semibold mb-10">Prêt à transformer votre communication ?</h2>
+            <div class="space-x-6">
+                <button class="button-effect bg-accent text-surface-white px-10 py-5 rounded-full text-lg font-medium">
+                    S'inscrire maintenant
+                </button>
+                <button class="button-effect bg-surface-white text-accent px-10 py-5 rounded-full text-lg font-medium border border-accent/10 hover:bg-accent-light">
+                    En savoir plus
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-text-secondary">
+            <p class="text-sm">© 2024 Speak to Lead. Tous droits réservés.</p>
+        </footer>
+    </div>
+</body>
+</html>
