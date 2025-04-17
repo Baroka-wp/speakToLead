@@ -92,36 +92,40 @@ function doPost(e) {
 
 // Cette fonction est obligatoire pour activer CORS et peut être utilisée pour tester
 function doGet(e) {
-    try {
-        // ID de votre Google Sheet
-        const sheetID = '1uq8bGoFpuWSoMJQTgjCAFtWbcBgUahSwWWD3BIzA4_4';
+    var action = e.parameter.action;
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-        // Vérifier si on peut ouvrir le fichier
-        const ss = SpreadsheetApp.openById(sheetID);
-        const sheetName = ss.getName();
-
-        // Vérifier si la feuille "Inscriptions" existe
-        const sheet = ss.getSheetByName('Inscriptions');
-        const sheetExists = sheet ? true : false;
-
-        return ContentService
-            .createTextOutput(JSON.stringify({
-                'result': 'success',
-                'message': 'Le service est actif',
-                'fileAccess': true,
-                'fileName': sheetName,
-                'sheetExists': sheetExists
-            }))
-            .setMimeType(ContentService.MimeType.JSON);
-    } catch (error) {
-        return ContentService
-            .createTextOutput(JSON.stringify({
-                'result': 'error',
-                'message': 'Le service est actif mais a rencontré des problèmes',
-                'error': error.toString()
-            }))
+    if (action === "getInscriptions") {
+        // Récupérer toutes les inscriptions
+        var data = getInscriptionsData();
+        return ContentService.createTextOutput(JSON.stringify(data))
             .setMimeType(ContentService.MimeType.JSON);
     }
+
+    return ContentService.createTextOutput("Aucune action spécifiée")
+        .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function getInscriptionsData() {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = sheet.getDataRange().getValues();
+    var headers = data[0];
+    var result = [];
+
+    // Ignorer la ligne d'en-tête
+    for (var i = 1; i < data.length; i++) {
+        var row = data[i];
+        var inscription = {};
+
+        // Créer un objet avec les données de chaque ligne
+        for (var j = 0; j < headers.length; j++) {
+            inscription[headers[j]] = row[j];
+        }
+
+        result.push(inscription);
+    }
+
+    return result;
 }
 
 // Instructions de déploiement mises à jour:

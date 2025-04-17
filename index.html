@@ -234,6 +234,12 @@
                     </div>
                     
                     <div>
+                        <label for="whatsapp" class="block text-text-secondary text-sm mb-2">Numéro WhatsApp (avec indicatif)</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: +229 67 15 39 74" required
+                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                    </div>
+                    
+                    <div>
                         <label for="creneau" class="block text-text-secondary text-sm mb-2">Choisir votre créneau</label>
                         <select id="creneau" name="creneau" required
                             class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition appearance-none">
@@ -285,6 +291,49 @@
                             <p class="text-text-secondary">Envoyez-nous un message WhatsApp</p>
                             <a href="https://wa.me/22967153974" target="_blank" class="text-xl font-semibold text-accent">+229 67 15 39 74</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de succès (caché par défaut) -->
+        <div id="successModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
+                <!-- En-tête du modal -->
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl sm:text-title font-semibold text-accent">Inscription confirmée !</h2>
+                    <button onclick="fermerModal(document.getElementById('successModal'))" class="text-text-secondary hover:text-text-primary transition-colors p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="flex justify-center mb-6">
+                        <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check-circle text-4xl text-accent"></i>
+                        </div>
+                    </div>
+                    
+                    <p id="successMessage" class="text-text-secondary text-lg text-center"></p>
+                    
+                    <div class="bg-accent/10 p-6 rounded-xl">
+                        <h3 class="font-semibold mb-2">Prochaines étapes :</h3>
+                        <ul class="text-text-secondary space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope text-accent mt-1 mr-2"></i>
+                                <span>Un email de confirmation vous a été envoyé avec tous les détails</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-calendar-check text-accent mt-1 mr-2"></i>
+                                <span>Nous vous attendons au créneau choisi</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone text-accent mt-1 mr-2"></i>
+                                <span>Pour toute question, contactez-nous au <a href="tel:+2290167153974" class="font-semibold text-accent">+229 01 67 15 39 74</a></span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -355,6 +404,24 @@
             }
         }
         
+        // Fonction pour afficher un message de succès
+        function afficherMessageSucces(message) {
+            const successModal = document.getElementById('successModal');
+            const messageElement = document.getElementById('successMessage');
+            
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+            
+            // Ouvrir le modal de succès
+            ouvrirModal(successModal);
+            
+            // Fermer automatiquement après 5 secondes
+            setTimeout(() => {
+                fermerModal(successModal);
+            }, 5000);
+        }
+        
         // Gestion des modals
         document.addEventListener('DOMContentLoaded', function() {
             // Générer les créneaux disponibles
@@ -418,7 +485,7 @@
                 e.preventDefault();
                 
                 // URL du script Google Apps Script déployé
-                const scriptURL = 'https://script.google.com/macros/s/AKfycby6bZ3UkiMgi9tAkB6YLZkPvCO1rOxN0dWMSaNhm_Vhw7fRVlBgYuAKXQMelvc4-4Cryg/exec';
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbxKO-Fnd6r1ImyyGa8Ld0oMkYg8IrsnHUaBx2Gd_ZWJKhogaJXyVkDWek2tzcWaufmdiQ/exec';
                 
                 // Récupérer les données du formulaire
                 const formData = new FormData(form);
@@ -426,6 +493,9 @@
                 // Ajouter la date d'inscription
                 const now = new Date();
                 formData.append('dateInscription', now.toLocaleString('fr-FR'));
+                
+                // Ajouter un flag pour indiquer qu'un email doit être envoyé
+                formData.append('sendEmail', 'true');
                 
                 // Désactiver le bouton pendant l'envoi
                 const submitBtn = form.querySelector('button[type="submit"]');
@@ -443,13 +513,19 @@
                     method: 'POST',
                     body: searchParams
                 })
-                .then(response => {
+                .then(response => response.json())
+                .then(data => {
                     // Réactiver le bouton
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Confirmer mon inscription';
                     
-                    // Fermer le modal après 3 secondes
-                    setTimeout(() => fermerModal(inscriptionModal), 3000);
+                    // Fermer le modal d'inscription
+                    fermerModal(inscriptionModal);
+                    
+                    // Afficher le message de succès
+                    const prenom = formData.get('prenom');
+                    const creneau = formData.get('creneau');
+                    afficherMessageSucces(`Merci ${prenom} ! Votre inscription pour le samedi ${creneau} a été confirmée. Un email de confirmation vous a été envoyé.`);
                 })
                 .catch(error => {
                     console.error('Erreur!', error.message);
@@ -457,6 +533,9 @@
                     // Réactiver le bouton
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Confirmer mon inscription';
+                    
+                    // Afficher un message d'erreur
+                    alert('Une erreur s\'est produite lors de l\'inscription. Veuillez réessayer.');
                 });
             });
         });
