@@ -273,7 +273,7 @@ function envoyerEmailConfirmation(data) {
                     <h3>Détails de votre inscription :</h3>
                     <p><strong>Date du créneau :</strong> Samedi ${creneau}</p>
                     <p><strong>Horaire :</strong> 18h-20h</p>
-                    <p><strong>Adresse :</strong> Bénin, Cotonou, Haie Vive, rue à définir</p>
+                    <p><strong>Adresse :</strong>  Bénin, Abomey-Calavi, Localisation Map: https://maps.app.goo.gl/TqCi5112j4ujsN83A?g_st=awb</p>
                 </div>
                 
                 <h3>Ce que vous allez apprendre :</h3>
