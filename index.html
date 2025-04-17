@@ -201,12 +201,12 @@
         </div>
 
         <!-- Modal d'inscription (caché par défaut) -->
-        <div id="inscriptionModal" class="fixed inset-0 bg-text-primary/30 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95">
+        <div id="inscriptionModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
                 <!-- En-tête du modal -->
                 <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-title font-semibold">Inscription</h2>
-                    <button id="closeModal" class="text-text-secondary hover:text-text-primary transition-colors">
+                    <h2 class="text-2xl sm:text-title font-semibold">Inscription</h2>
+                    <button id="closeModal" class="text-text-secondary hover:text-text-primary transition-colors p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -264,6 +264,45 @@
             </div>
         </div>
 
+        <!-- Modal d'information (caché par défaut) -->
+        <div id="infoModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
+                <!-- En-tête du modal -->
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl sm:text-title font-semibold">Nous contacter</h2>
+                    <button class="closeInfoModal text-text-secondary hover:text-text-primary transition-colors p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <p class="text-text-secondary text-lg">Pour plus d'informations sur nos programmes, n'hésitez pas à nous contacter :</p>
+                    
+                    <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
+                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-phone text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-text-secondary">Appelez-nous au</p>
+                            <a href="tel:+33123456789" class="text-xl font-semibold text-accent">+33 1 23 45 67 89</a>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
+                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fab fa-whatsapp text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-text-secondary">Envoyez-nous un message WhatsApp</p>
+                            <a href="https://wa.me/33123456789" target="_blank" class="text-xl font-semibold text-accent">WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer class="text-center text-text-secondary">
             <p class="text-sm">© 2024 Speak to Lead. Tous droits réservés.</p>
@@ -300,57 +339,97 @@
             }
         }
         
-        // Gestion du modal
+        // Gestion des modals
         document.addEventListener('DOMContentLoaded', function() {
             // Générer les créneaux disponibles
             genererCreneaux();
             
             // Références aux éléments du DOM
-            const inscriptionBtns = document.querySelectorAll('button:not(#closeModal)');
-            const modal = document.getElementById('inscriptionModal');
+            const inscriptionBtns = document.querySelectorAll('button');
+            const infoBtn = document.querySelectorAll('button');
+            const inscriptionModal = document.getElementById('inscriptionModal');
+            const infoModal = document.getElementById('infoModal');
             const closeBtn = document.getElementById('closeModal');
+            const closeInfoBtns = document.querySelectorAll('.closeInfoModal');
             const form = document.getElementById('inscriptionForm');
             const statusMessage = document.getElementById('statusMessage');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            // Ouvrir le modal quand on clique sur "S'inscrire maintenant"
+            // Ouvrir le modal d'inscription quand on clique sur les boutons d'inscription
             inscriptionBtns.forEach(btn => {
-                if (btn.textContent.trim() === "S'inscrire maintenant") {
+                const btnText = btn.textContent.trim();
+                if (btnText === "S'inscrire maintenant" || btnText === "Rejoindre le programme") {
                     btn.addEventListener('click', function() {
-                        modal.classList.remove('opacity-0', 'pointer-events-none');
-                        modal.classList.add('opacity-100', 'pointer-events-auto');
-                        document.querySelector('.glass-morphism', modal).classList.remove('scale-95');
-                        document.querySelector('.glass-morphism', modal).classList.add('scale-100');
-                        document.body.style.overflow = 'hidden'; // Empêcher le défilement
+                        ouvrirModal(inscriptionModal);
                     });
                 }
             });
             
-            // Fermer le modal
-            closeBtn.addEventListener('click', function() {
-                fermerModal();
-            });
-            
-            // Fermer le modal en cliquant à l'extérieur
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    fermerModal();
+            // Ouvrir le modal d'info quand on clique sur "En savoir plus"
+            infoBtn.forEach(btn => {
+                if (btn.textContent.trim() === "En savoir plus") {
+                    btn.addEventListener('click', function() {
+                        ouvrirModal(infoModal);
+                    });
                 }
             });
             
-            function fermerModal() {
+            // Fermer le modal d'inscription
+            closeBtn.addEventListener('click', function() {
+                fermerModal(inscriptionModal);
+            });
+            
+            // Fermer le modal d'info
+            closeInfoBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    fermerModal(infoModal);
+                });
+            });
+            
+            // Fermer les modals en cliquant à l'extérieur
+            inscriptionModal.addEventListener('click', function(e) {
+                if (e.target === inscriptionModal) {
+                    fermerModal(inscriptionModal);
+                }
+            });
+            
+            infoModal.addEventListener('click', function(e) {
+                if (e.target === infoModal) {
+                    fermerModal(infoModal);
+                }
+            });
+            
+            // Fonction pour ouvrir un modal
+            function ouvrirModal(modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                
+                const modalContent = modal.querySelector('.glass-morphism');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+                
+                document.body.style.overflow = 'hidden'; // Empêcher le défilement
+            }
+            
+            // Fonction pour fermer un modal
+            function fermerModal(modal) {
                 modal.classList.remove('opacity-100', 'pointer-events-auto');
                 modal.classList.add('opacity-0', 'pointer-events-none');
-                document.querySelector('.glass-morphism', modal).classList.remove('scale-100');
-                document.querySelector('.glass-morphism', modal).classList.add('scale-95');
+                
+                const modalContent = modal.querySelector('.glass-morphism');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+                
                 document.body.style.overflow = ''; // Réactiver le défilement
                 
-                // Réinitialiser le formulaire et les messages
-                form.reset();
-                statusMessage.classList.add('hidden');
-                successMessage.classList.add('hidden');
-                errorMessage.classList.add('hidden');
+                // Réinitialiser le formulaire et les messages si c'est le modal d'inscription
+                if (modal === inscriptionModal) {
+                    form.reset();
+                    statusMessage.classList.add('hidden');
+                    successMessage.classList.add('hidden');
+                    errorMessage.classList.add('hidden');
+                }
             }
             
             // Soumission du formulaire
@@ -359,10 +438,6 @@
                 
                 // URL du script Google Apps Script déployé
                 const scriptURL = 'https://script.google.com/macros/s/AKfycby6bZ3UkiMgi9tAkB6YLZkPvCO1rOxN0dWMSaNhm_Vhw7fRVlBgYuAKXQMelvc4-4Cryg/exec';
-                
-                // Mode réel - Envoi vers Google Sheets via Google Apps Script
-                console.log("Envoi des données à Google Sheets...");
-                console.log("URL:", scriptURL);
                 
                 // Récupérer les données du formulaire
                 const formData = new FormData(form);
@@ -376,9 +451,8 @@
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Envoi en cours...';
                 
-                const searchParams = new URLSearchParams();
-                
                 // Convertir FormData en URLSearchParams (format plus fiable pour Google Apps Script)
+                const searchParams = new URLSearchParams();
                 for (const [key, value] of formData.entries()) {
                     searchParams.append(key, value);
                     console.log(`${key}: ${value}`);
@@ -391,41 +465,41 @@
                     method: 'POST',
                     body: searchParams
                 })
-                    .then(response => {
-                        console.log("Réponse reçue:", response);
-                        return response.text(); // Pour voir le contenu brut de la réponse
-                    })
-                    .then(text => {
-                        console.log("Contenu de la réponse:", text);
-                        
-                        // Tenter de parser la réponse JSON si possible
-                        try {
-                            const json = JSON.parse(text);
-                            console.log("Réponse JSON:", json);
-                        } catch (e) {
-                            console.log("La réponse n'est pas au format JSON");
-                        }
-                        
-                        statusMessage.classList.remove('hidden');
-                        successMessage.classList.remove('hidden');
-                        
-                        // Réactiver le bouton
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Confirmer mon inscription';
-                        
-                        // Fermer le modal après 3 secondes
-                        setTimeout(fermerModal, 3000);
-                    })
-                    .catch(error => {
-                        console.error('Erreur!', error.message);
-                        statusMessage.classList.remove('hidden');
-                        errorMessage.classList.remove('hidden');
-                        errorMessage.textContent = "Une erreur s'est produite. Veuillez réessayer.";
-                        
-                        // Réactiver le bouton
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Confirmer mon inscription';
-                    });
+                .then(response => {
+                    console.log("Réponse reçue:", response);
+                    return response.text(); // Pour voir le contenu brut de la réponse
+                })
+                .then(text => {
+                    console.log("Contenu de la réponse:", text);
+                    
+                    // Tenter de parser la réponse JSON si possible
+                    try {
+                        const json = JSON.parse(text);
+                        console.log("Réponse JSON:", json);
+                    } catch (e) {
+                        console.log("La réponse n'est pas au format JSON");
+                    }
+                    
+                    statusMessage.classList.remove('hidden');
+                    successMessage.classList.remove('hidden');
+                    
+                    // Réactiver le bouton
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Confirmer mon inscription';
+                    
+                    // Fermer le modal après 3 secondes
+                    setTimeout(() => fermerModal(inscriptionModal), 3000);
+                })
+                .catch(error => {
+                    console.error('Erreur!', error.message);
+                    statusMessage.classList.remove('hidden');
+                    errorMessage.classList.remove('hidden');
+                    errorMessage.textContent = "Une erreur s'est produite. Veuillez réessayer.";
+                    
+                    // Réactiver le bouton
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Confirmer mon inscription';
+                });
             });
 
             // Fonction de diagnostic pour tester la connexion avec Google Sheets
