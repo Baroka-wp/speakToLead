@@ -247,19 +247,6 @@
                             Confirmer mon inscription
                         </button>
                     </div>
-                    
-                    <!-- Message de statut -->
-                    <div id="statusMessage" class="text-center hidden">
-                        <p id="successMessage" class="text-accent hidden">Votre inscription a été enregistrée avec succès!</p>
-                        <p id="errorMessage" class="text-red-500 hidden">Une erreur s'est produite. Veuillez réessayer.</p>
-                    </div>
-                    
-                    <!-- Bouton de diagnostic (caché par défaut, accessible en ajoutant la classe 'hidden') -->
-                    <div class="mt-4 text-center">
-                        <button type="button" id="testConnectionBtn" class="text-xs text-text-secondary underline" onclick="testerConnexionGoogleSheet()">
-                            Test technique
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>
@@ -286,7 +273,7 @@
                         </div>
                         <div>
                             <p class="text-text-secondary">Appelez-nous au</p>
-                            <a href="tel:+33123456789" class="text-xl font-semibold text-accent">+33 1 23 45 67 89</a>
+                            <a href="tel:+2290167153974" class="text-xl font-semibold text-accent">+229 01 67 15 39 74</a>
                         </div>
                     </div>
                     
@@ -296,7 +283,7 @@
                         </div>
                         <div>
                             <p class="text-text-secondary">Envoyez-nous un message WhatsApp</p>
-                            <a href="https://wa.me/33123456789" target="_blank" class="text-xl font-semibold text-accent">WhatsApp</a>
+                            <a href="https://wa.me/22967153974" target="_blank" class="text-xl font-semibold text-accent">+229 67 15 39 74</a>
                         </div>
                     </div>
                 </div>
@@ -339,6 +326,35 @@
             }
         }
         
+        // Fonction pour ouvrir un modal
+        function ouvrirModal(modal) {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            
+            const modalContent = modal.querySelector('.glass-morphism');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+            
+            document.body.style.overflow = 'hidden'; // Empêcher le défilement
+        }
+        
+        // Fonction pour fermer un modal
+        function fermerModal(modal) {
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            
+            const modalContent = modal.querySelector('.glass-morphism');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            document.body.style.overflow = ''; // Réactiver le défilement
+            
+            // Réinitialiser le formulaire si c'est le modal d'inscription
+            if (modal === document.getElementById('inscriptionModal')) {
+                document.getElementById('inscriptionForm').reset();
+            }
+        }
+        
         // Gestion des modals
         document.addEventListener('DOMContentLoaded', function() {
             // Générer les créneaux disponibles
@@ -352,9 +368,6 @@
             const closeBtn = document.getElementById('closeModal');
             const closeInfoBtns = document.querySelectorAll('.closeInfoModal');
             const form = document.getElementById('inscriptionForm');
-            const statusMessage = document.getElementById('statusMessage');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
             
             // Ouvrir le modal d'inscription quand on clique sur les boutons d'inscription
             inscriptionBtns.forEach(btn => {
@@ -400,38 +413,6 @@
                 }
             });
             
-            // Fonction pour ouvrir un modal
-            function ouvrirModal(modal) {
-                modal.classList.remove('opacity-0', 'pointer-events-none');
-                modal.classList.add('opacity-100', 'pointer-events-auto');
-                
-                const modalContent = modal.querySelector('.glass-morphism');
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
-                
-                document.body.style.overflow = 'hidden'; // Empêcher le défilement
-            }
-            
-            // Fonction pour fermer un modal
-            function fermerModal(modal) {
-                modal.classList.remove('opacity-100', 'pointer-events-auto');
-                modal.classList.add('opacity-0', 'pointer-events-none');
-                
-                const modalContent = modal.querySelector('.glass-morphism');
-                modalContent.classList.remove('scale-100');
-                modalContent.classList.add('scale-95');
-                
-                document.body.style.overflow = ''; // Réactiver le défilement
-                
-                // Réinitialiser le formulaire et les messages si c'est le modal d'inscription
-                if (modal === inscriptionModal) {
-                    form.reset();
-                    statusMessage.classList.add('hidden');
-                    successMessage.classList.add('hidden');
-                    errorMessage.classList.add('hidden');
-                }
-            }
-            
             // Soumission du formulaire
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -455,10 +436,7 @@
                 const searchParams = new URLSearchParams();
                 for (const [key, value] of formData.entries()) {
                     searchParams.append(key, value);
-                    console.log(`${key}: ${value}`);
                 }
-                
-                console.log("Données à envoyer:", Object.fromEntries(searchParams));
                 
                 // Envoyer les données
                 fetch(scriptURL, {
@@ -466,23 +444,6 @@
                     body: searchParams
                 })
                 .then(response => {
-                    console.log("Réponse reçue:", response);
-                    return response.text(); // Pour voir le contenu brut de la réponse
-                })
-                .then(text => {
-                    console.log("Contenu de la réponse:", text);
-                    
-                    // Tenter de parser la réponse JSON si possible
-                    try {
-                        const json = JSON.parse(text);
-                        console.log("Réponse JSON:", json);
-                    } catch (e) {
-                        console.log("La réponse n'est pas au format JSON");
-                    }
-                    
-                    statusMessage.classList.remove('hidden');
-                    successMessage.classList.remove('hidden');
-                    
                     // Réactiver le bouton
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Confirmer mon inscription';
@@ -492,40 +453,12 @@
                 })
                 .catch(error => {
                     console.error('Erreur!', error.message);
-                    statusMessage.classList.remove('hidden');
-                    errorMessage.classList.remove('hidden');
-                    errorMessage.textContent = "Une erreur s'est produite. Veuillez réessayer.";
                     
                     // Réactiver le bouton
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Confirmer mon inscription';
                 });
             });
-
-            // Fonction de diagnostic pour tester la connexion avec Google Sheets
-            function testerConnexionGoogleSheet() {
-                const testURL = 'https://script.google.com/macros/s/AKfycby6bZ3UkiMgi9tAkB6YLZkPvCO1rOxN0dWMSaNhm_Vhw7fRVlBgYuAKXQMelvc4-4Cryg/exec';
-                
-                console.log("Test de connexion à Google Sheets...");
-                
-                // Appel GET pour tester la connexion
-                fetch(testURL)
-                    .then(response => {
-                        console.log("Réponse brute:", response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Données reçues:", data);
-                        alert("Test de connexion réussi. Vérifiez la console pour les détails.");
-                    })
-                    .catch(error => {
-                        console.error("Erreur de connexion:", error);
-                        alert("Erreur de connexion. Vérifiez la console pour les détails.");
-                    });
-            }
-            
-            // Exécuter le test au chargement (à commenter après débogage)
-            // window.addEventListener('load', testerConnexionGoogleSheet);
         });
     </script>
 </body>
