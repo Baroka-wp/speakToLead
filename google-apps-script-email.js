@@ -33,6 +33,7 @@ function doPost(e) {
                         "WhatsApp",
                         "Créneau",
                         "Statut",
+                        "Statut Paiement",
                         "Email envoyé",
                         "Logs"
                     ]);
@@ -46,6 +47,12 @@ function doPost(e) {
                         // Ajouter la colonne si elle n'existe pas
                         sheet.getRange(1, sheet.getLastColumn() + 1).setValue("Email envoyé");
                         Logger.log("Colonne 'Email envoyé' ajoutée");
+                    }
+
+                    if (headers.indexOf("Statut Paiement") === -1) {
+                        // Ajouter la colonne statut de paiement si elle n'existe pas
+                        sheet.getRange(1, sheet.getLastColumn() + 1).setValue("Statut Paiement");
+                        Logger.log("Colonne 'Statut Paiement' ajoutée");
                     }
 
                     if (headers.indexOf("Logs") === -1) {
@@ -72,6 +79,7 @@ function doPost(e) {
                 data.whatsapp || '',
                 data.creneau || '',
                 'Inscrit', // Statut par défaut
+                'En attente', // Statut de paiement par défaut
                 'Non' // Email envoyé - par défaut non
             ];
 
@@ -272,18 +280,42 @@ function envoyerEmailConfirmation(data) {
                 <div class="details">
                     <h3>Détails de votre inscription :</h3>
                     <p><strong>Date du créneau :</strong> Samedi ${creneau}</p>
-                    <p><strong>Horaire :</strong> 18h-20h</p>
+                    <p><strong>Horaire :</strong> 17h-19h</p>
                     <p><strong>Adresse :</strong>  Bénin, Abomey-Calavi, Localisation Map: https://maps.app.goo.gl/TqCi5112j4ujsN83A?g_st=awb</p>
+                </div>
+                
+                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 4px; margin: 15px 0;">
+                    <h3 style="color: #34C759; margin-top: 0;">Comment se déroule une session ?</h3>
+                    
+                    <p><strong>1. Accueil et rituel d'ouverture</strong><br>
+                    Chaque apprenant est accueilli individuellement. La session commence par un échange informel en anglais où chacun peut partager son humeur ou ses expériences récentes.</p>
+                    
+                    <p><strong>2. Activités d'expression orale</strong><br>
+                    Des activités variées encouragent chacun à s'exprimer en anglais : jeux de rôle, débats, présentations courtes et discussions en petits groupes où chaque voix est respectée.</p>
+                    
+                    <p><strong>3. Partage d'expériences</strong><br>
+                    Les apprenants sont encouragés à partager des anecdotes personnelles en anglais, ce qui crée un lien émotionnel avec la langue et renforce la confiance en soi.</p>
+                    
+                    <p><strong>4. Clôture et retour d'expérience</strong><br>
+                    La session se termine par une synthèse collective, des feedbacks constructifs et un aperçu de la session suivante, le tout en anglais pour maximiser l'immersion.</p>
                 </div>
                 
                 <h3>Ce que vous allez apprendre :</h3>
                 <ul>
-                    <li>Fluidité et confiance en anglais</li>
-                    <li>Communication efficace et persuasion</li>
-                    <li>Collaboration en environnement multilingue</li>
+                    <li>Fluidité et confiance pour vous exprimer en anglais</li>
+                    <li>Techniques de communication efficace et persuasion</li>
+                    <li>Collaboration et échanges dans un environnement international</li>
                 </ul>
                 
-                <p>Nous vous recommandons d'arriver 10 minutes avant le début de la session.</p>
+                <div class="details" style="background-color: #e9f7ec; padding: 18px; border-radius: 6px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #34C759;">Rappel des informations de paiement :</h3>
+                    <p><strong>Prix :</strong> 5500 FCFA par séance</p>
+                    <p><strong>Méthode de paiement :</strong> Mobile Money</p>
+                    <p><strong>Numéro Mobile Money :</strong> +229 64 36 20 49</p>
+                    <p><strong>Note importante :</strong> Veuillez envoyer la capture d'écran de votre paiement par WhatsApp au <strong>+229 69 02 17 27</strong> au moins 24h avant votre séance.</p>
+                </div>
+                
+                <p>Nous vous recommandons d'arriver 10 minutes avant le début de la session pour profiter de l'accueil personnalisé et vous installer confortablement.</p>
                 
                 <div class="contact">
                     <h3>Besoin d'aide ou de renseignements ?</h3>
@@ -325,7 +357,7 @@ function envoyerEmailConfirmation(data) {
                 GmailApp.sendEmail(
                     email,
                     sujet,
-                    "Votre inscription au programme Speak to Lead a été confirmée pour le samedi " + creneau + " (18h-20h).", // Version texte simple
+                    "Votre inscription au programme Speak to Lead a été confirmée pour le samedi " + creneau + " (17h-19h).", // Version texte simple
                     {
                         htmlBody: corps,
                         name: "Speak to Lead"

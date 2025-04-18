@@ -17,8 +17,10 @@ function doPost(e) {
             data.nom || '',
             data.prenom || '',
             data.email || '',
+            data.whatsapp || '',
             data.creneau || '',
-            'Inscrit' // Statut par défaut
+            'Inscrit', // Statut par défaut
+            'En attente' // Statut de paiement par défaut
         ];
 
         // Ajouter les données à la feuille Google Sheet
@@ -26,7 +28,11 @@ function doPost(e) {
 
         // Répondre avec un succès
         return ContentService
-            .createTextOutput(JSON.stringify({ 'result': 'success', 'message': 'Inscription enregistrée avec succès' }))
+            .createTextOutput(JSON.stringify({
+                'result': 'success',
+                'message': 'Inscription enregistrée avec succès',
+                'data': rowData
+            }))
             .setMimeType(ContentService.MimeType.JSON);
 
     } catch (error) {

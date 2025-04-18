@@ -79,6 +79,75 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 16px -2px rgba(52, 199, 89, 0.2);
         }
+        
+        /* Style pour les modaux */
+        body.modal-open {
+            overflow: hidden; /* Empêche le scroll du body quand un modal est ouvert */
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            touch-action: none; /* Empêche les interactions tactiles */
+        }
+        
+        html.ios-modal-open,
+        html.ios-modal-open body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85); /* Fond encore plus assombri */
+            z-index: 9999; /* Valeur très élevée pour s'assurer qu'il est au-dessus de tout */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden; /* Empêche le scroll de l'overlay */
+            /* Garantir la couverture complète de l'écran */
+            width: 100vw;
+            height: 100vh;
+            will-change: opacity; /* Optimisation performance */
+            touch-action: none; /* Empêche les interactions tactiles sauf dans le modal */
+        }
+        
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh; /* Légèrement réduit pour s'assurer qu'il y a un espace visible autour */
+            margin: 20px;
+            z-index: 10000;
+            transform: scale(0.95);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+        }
+        
+        .modal-overlay.opacity-100 .modal-content {
+            opacity: 1;
+        }
+        
+        .modal-content-inner {
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            overflow-y: auto; /* Seul le contenu du modal peut défiler */
+            max-height: 100%; /* Prendre toute la hauteur disponible */
+            padding: 20px 24px;
+            background-color: rgba(255, 255, 255, 0.95); /* Fond plus opaque pour meilleur contraste */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (min-width: 640px) {
+            .modal-content-inner {
+                padding: 28px 32px;
+            }
+        }
 
         @media (max-width: 640px) {
             .glass-morphism {
@@ -86,18 +155,25 @@
                 -webkit-backdrop-filter: blur(10px) saturate(160%);
             }
         }
+
+        /* Pour éviter le flou sur les modaux mobiles */
+        @supports (-webkit-overflow-scrolling: touch) {
+            .modal-content-inner {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
     </style>
 </head>
 <body class="bg-neutral font-sans text-text-primary antialiased min-h-screen selection:bg-accent-light selection:text-accent">
-    <div class="max-w-7xl mx-auto px-0 sm:px-8 lg:px-12 py-20 space-y-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20 space-y-16 sm:space-y-24">
         <!-- Hero Section -->
-        <div class="relative rounded-[32px] overflow-hidden">
+        <div class="relative rounded-[20px] sm:rounded-[32px] overflow-hidden">
             <div class="absolute inset-0 hero-background"></div>
-            <div class="relative hero-overlay p-12 sm:p-16 lg:p-20">
+            <div class="relative hero-overlay p-8 sm:p-12 lg:p-20">
                 <div class="text-center max-w-3xl mx-auto">
-                    <h1 class="text-display font-semibold text-text-primary mb-6 tracking-tight">Speak to Lead</h1>
-                    <p class="text-subtitle text-text-secondary font-light mb-12 leading-relaxed">Améliorez vos compétences orales en anglais</p>
-                    <button class="button-effect bg-accent text-surface-white px-12 py-5 rounded-full text-lg font-medium">
+                    <h1 class="text-4xl sm:text-5xl lg:text-display font-semibold text-text-primary mb-4 sm:mb-6 tracking-tight">Speak to Lead</h1>
+                    <p class="text-xl sm:text-2xl lg:text-subtitle text-text-secondary font-light mb-8 sm:mb-12 leading-relaxed">Améliorez vos compétences orales en anglais</p>
+                    <button class="button-effect bg-accent text-surface-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg font-medium">
                         Rejoindre le programme
                     </button>
                 </div>
@@ -105,17 +181,17 @@
         </div>
 
         <!-- Program Overview -->
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="glass-morphism p-12 rounded-[24px] hover-lift smooth-shadow">
-                <h2 class="text-title font-semibold mb-8">Le Programme</h2>
+        <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
+            <div class="glass-morphism p-6 sm:p-8 lg:p-12 rounded-[16px] sm:rounded-[24px] hover-lift smooth-shadow">
+                <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-8">Le Programme</h2>
                 <div class="space-y-6 text-text-secondary text-lg">
-                    <p class="leading-relaxed">Un programme intensif de 8 semaines pour maîtriser l'art de la communication en anglais.</p>
+                    <p class="leading-relaxed">Un programme intensif conçu pour développer vos compétences en anglais dans un environnement bienveillant et collaboratif.</p>
                     <ul class="space-y-4">
                         <li class="flex items-center">
                             <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
                                 <i class="fas fa-clock text-accent text-sm"></i>
                             </div>
-                            2 heures par semaine
+                            2 heures par semaine (samedi, 17h-19h)
                         </li>
                         <li class="flex items-center">
                             <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
@@ -125,171 +201,228 @@
                         </li>
                         <li class="flex items-center">
                             <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-star text-accent text-sm"></i>
+                                <i class="fas fa-money-bill text-accent text-sm"></i>
                             </div>
-                            Suivi personnalisé
+                            5500 FCFA par séance (paiement Mobile Money)
                         </li>
                     </ul>
                 </div>
             </div>
             
-            <div class="glass-morphism p-12 rounded-[24px] hover-lift smooth-shadow">
-                <h2 class="text-title font-semibold mb-8">Objectifs</h2>
+            <div class="glass-morphism p-6 sm:p-8 lg:p-12 rounded-[16px] sm:rounded-[24px] hover-lift smooth-shadow">
+                <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-8">Notre Approche</h2>
                 <ul class="space-y-6 text-text-secondary text-lg">
-                    <li class="flex items-center">
-                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-check text-accent text-sm"></i>
+                    <li class="flex items-start">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4 mt-1">
+                            <i class="fas fa-comments text-accent text-sm"></i>
                         </div>
-                        Fluidité et confiance en anglais
+                        <span>Encouragement constant à s'exprimer en anglais dans un cadre bienveillant et structuré</span>
                     </li>
-                    <li class="flex items-center">
-                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-check text-accent text-sm"></i>
+                    <li class="flex items-start">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4 mt-1">
+                            <i class="fas fa-users text-accent text-sm"></i>
                         </div>
-                        Communication efficace et persuasion
+                        <span>Travail en petits groupes pour maximiser le temps de parole de chaque apprenant</span>
                     </li>
-                    <li class="flex items-center">
-                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-check text-accent text-sm"></i>
+                    <li class="flex items-start">
+                        <div class="w-8 h-8 bg-accent-light rounded-full flex items-center justify-center mr-4 mt-1">
+                            <i class="fas fa-lightbulb text-accent text-sm"></i>
                         </div>
-                        Collaboration en environnement multilingue
+                        <span>Partage d'expériences personnelles pour ancrer l'apprentissage dans le vécu</span>
                     </li>
                 </ul>
             </div>
         </div>
 
         <!-- Program Details -->
-        <div class="glass-morphism rounded-[24px] p-12 sm:p-16">
-            <div class="grid md:grid-cols-3 gap-12 lg:gap-16">
+        <div class="glass-morphism rounded-[16px] sm:rounded-[24px] p-6 sm:p-8 lg:p-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
-                        <i class="fas fa-graduation-cap text-2xl text-accent"></i>
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-accent-light rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-8">
+                        <i class="fas fa-door-open text-xl sm:text-2xl text-accent"></i>
                     </div>
-                    <h3 class="text-subtitle font-semibold mb-4">Méthode</h3>
-                    <p class="text-text-secondary text-lg leading-relaxed">Mises en situation réelles et travaux en groupe interactifs</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-subtitle font-semibold mb-3 sm:mb-4">Début de session</h3>
+                    <p class="text-base sm:text-lg text-text-secondary leading-relaxed">Accueil personnalisé, rituel d'ouverture et activités d'ice-breaking pour créer un climat de confiance</p>
                 </div>
                 
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
-                        <i class="fas fa-comments text-2xl text-accent"></i>
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-accent-light rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-8">
+                        <i class="fas fa-exchange-alt text-xl sm:text-2xl text-accent"></i>
                     </div>
-                    <h3 class="text-subtitle font-semibold mb-4">Thèmes</h3>
-                    <p class="text-text-secondary text-lg leading-relaxed">Leadership, communication interculturelle, résolution de conflits</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-subtitle font-semibold mb-3 sm:mb-4">Cœur de session</h3>
+                    <p class="text-base sm:text-lg text-text-secondary leading-relaxed">Échanges en anglais, partage d'histoires personnelles et travail collaboratif en petits groupes</p>
                 </div>
                 
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-accent-light rounded-2xl flex items-center justify-center mx-auto mb-8">
-                        <i class="fas fa-chart-line text-2xl text-accent"></i>
+                <div class="text-center sm:col-span-2 md:col-span-1">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-accent-light rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-8">
+                        <i class="fas fa-check-circle text-xl sm:text-2xl text-accent"></i>
                     </div>
-                    <h3 class="text-subtitle font-semibold mb-4">Progression</h3>
-                    <p class="text-text-secondary text-lg leading-relaxed">Évaluation continue et feedback personnalisé</p>
+                    <h3 class="text-xl sm:text-2xl lg:text-subtitle font-semibold mb-3 sm:mb-4">Clôture réfléchie</h3>
+                    <p class="text-base sm:text-lg text-text-secondary leading-relaxed">Synthèse des apprentissages, feedbacks constructifs et projections vers la session suivante</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="glass-morphism rounded-[16px] sm:rounded-[24px] p-6 sm:p-8 lg:p-12">
+            <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-8 text-center">Comment se déroule une session ?</h2>
+            <div class="space-y-6">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                        <span class="font-semibold">1</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">Accueil et rituel d'ouverture</h3>
+                        <p class="text-text-secondary">Chaque apprenant est accueilli individuellement. La session commence par un échange informel en anglais où chacun peut partager son humeur ou ses expériences récentes.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                        <span class="font-semibold">2</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">Activités d'expression orale</h3>
+                        <p class="text-text-secondary">Des activités variées encouragent chacun à s'exprimer en anglais : jeux de rôle, débats, présentations courtes et discussions en petits groupes où chaque voix est respectée.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                        <span class="font-semibold">3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">Partage d'expériences</h3>
+                        <p class="text-text-secondary">Les apprenants sont encouragés à partager des anecdotes personnelles en anglais, ce qui crée un lien émotionnel avec la langue et renforce la confiance en soi.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                        <span class="font-semibold">4</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">Clôture et retour d'expérience</h3>
+                        <p class="text-text-secondary">La session se termine par une synthèse collective, des feedbacks constructifs et un aperçu de la session suivante, le tout en anglais pour maximiser l'immersion.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Call to Action -->
-        <div class="text-center glass-morphism rounded-[32px] p-16 sm:p-20">
-            <h2 class="text-title font-semibold mb-10">Prêt à transformer votre communication ?</h2>
-            <div class="space-x-6">
-                <button class="button-effect bg-accent text-surface-white px-10 py-5 rounded-full text-lg font-medium">
+        <div class="text-center glass-morphism rounded-[20px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16">
+            <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-10">Prêt à transformer votre communication ?</h2>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <button class="button-effect bg-accent text-surface-white px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg font-medium w-full sm:w-auto">
                     S'inscrire maintenant
                 </button>
-                <button class="button-effect bg-surface-white text-accent px-10 py-5 rounded-full text-lg font-medium border border-accent/10 hover:bg-accent-light">
+                <button class="button-effect bg-surface-white text-accent px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg font-medium border border-accent/10 hover:bg-accent-light w-full sm:w-auto">
                     En savoir plus
                 </button>
             </div>
         </div>
 
         <!-- Modal d'inscription (caché par défaut) -->
-        <div id="inscriptionModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
-                <!-- En-tête du modal -->
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl sm:text-title font-semibold">Inscription</h2>
-                    <button id="closeModal" class="text-text-secondary hover:text-text-primary transition-colors p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                
-                <!-- Formulaire d'inscription -->
-                <form id="inscriptionForm" class="space-y-6">
-                    <div>
-                        <label for="prenom" class="block text-text-secondary text-sm mb-2">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" required
-                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
-                    </div>
-                    
-                    <div>
-                        <label for="nom" class="block text-text-secondary text-sm mb-2">Nom</label>
-                        <input type="text" id="nom" name="nom" required
-                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
-                    </div>
-                    
-                    <div>
-                        <label for="email" class="block text-text-secondary text-sm mb-2">Email</label>
-                        <input type="email" id="email" name="email" required
-                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
-                    </div>
-                    
-                    <div>
-                        <label for="whatsapp" class="block text-text-secondary text-sm mb-2">Numéro WhatsApp (avec indicatif)</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: +229 67 15 39 74" required
-                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
-                    </div>
-                    
-                    <div>
-                        <label for="creneau" class="block text-text-secondary text-sm mb-2">Choisir votre créneau</label>
-                        <select id="creneau" name="creneau" required
-                            class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition appearance-none">
-                            <option value="" disabled selected>Sélectionnez un samedi (18h-20h)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="pt-4">
-                        <button type="submit"
-                            class="w-full button-effect bg-accent text-surface-white px-6 py-4 rounded-xl text-lg font-medium">
-                            Confirmer mon inscription
+        <div id="inscriptionModal" class="modal-overlay opacity-0 pointer-events-none">
+            <div class="modal-content">
+                <div class="modal-content-inner glass-morphism">
+                    <!-- En-tête du modal -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl sm:text-2xl font-semibold">Inscription</h2>
+                        <button id="closeModal" class="text-text-secondary hover:text-text-primary transition-colors p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
                     </div>
-                </form>
+                    
+                    <!-- Formulaire d'inscription -->
+                    <form id="inscriptionForm" class="space-y-4 sm:space-y-6">
+                        <div>
+                            <label for="prenom" class="block text-text-secondary text-sm mb-2">Prénom</label>
+                            <input type="text" id="prenom" name="prenom" required
+                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                        </div>
+                        
+                        <div>
+                            <label for="nom" class="block text-text-secondary text-sm mb-2">Nom</label>
+                            <input type="text" id="nom" name="nom" required
+                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-text-secondary text-sm mb-2">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                        </div>
+                        
+                        <div>
+                            <label for="whatsapp" class="block text-text-secondary text-sm mb-2">Numéro WhatsApp (avec indicatif)</label>
+                            <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: +229 67 15 39 74" required
+                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                        </div>
+                        
+                        <div>
+                            <label for="creneau" class="block text-text-secondary text-sm mb-2">Choisir votre créneau</label>
+                            <select id="creneau" name="creneau" required
+                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition appearance-none">
+                                <option value="" disabled selected>Sélectionnez un samedi (17h-19h)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bg-accent/10 p-4 rounded-xl mb-4">
+                            <h3 class="font-semibold mb-2 text-sm">Information de paiement :</h3>
+                            <p class="text-text-secondary text-sm mb-2">Prix unique: <span class="font-semibold">5500 FCFA</span> par séance</p>
+                            <p class="text-text-secondary text-sm mb-2">À payer par Mobile Money au <span class="font-semibold">+229 64 36 20 49</span></p>
+                            <p class="text-text-secondary text-sm">Envoyez la preuve de paiement par WhatsApp au <span class="font-semibold">+229 69 02 17 27</span></p>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button type="submit"
+                                class="w-full button-effect bg-accent text-surface-white px-6 py-4 rounded-xl text-lg font-medium">
+                                Confirmer mon inscription
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Modal d'information (caché par défaut) -->
-        <div id="infoModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
-                <!-- En-tête du modal -->
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl sm:text-title font-semibold">Nous contacter</h2>
-                    <button class="closeInfoModal text-text-secondary hover:text-text-primary transition-colors p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                
-                <div class="space-y-6">
-                    <p class="text-text-secondary text-lg">Pour plus d'informations sur nos programmes, n'hésitez pas à nous contacter :</p>
-                    
-                    <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
-                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-phone text-white"></i>
-                        </div>
-                        <div>
-                            <p class="text-text-secondary">Appelez-nous au</p>
-                            <a href="tel:+2290167153974" class="text-xl font-semibold text-accent">+229 01 67 15 39 74</a>
-                        </div>
+        <div id="infoModal" class="modal-overlay opacity-0 pointer-events-none">
+            <div class="modal-content">
+                <div class="modal-content-inner glass-morphism">
+                    <!-- En-tête du modal -->
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl sm:text-title font-semibold">Nous contacter</h2>
+                        <button class="closeInfoModal text-text-secondary hover:text-text-primary transition-colors p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
                     
-                    <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
-                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fab fa-whatsapp text-white"></i>
+                    <div class="space-y-6">
+                        <p class="text-text-secondary text-lg">Pour plus d'informations sur nos programmes, n'hésitez pas à nous contacter :</p>
+                        
+                        <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
+                            <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-text-secondary">Appelez-nous au</p>
+                                <a href="tel:+2290167153974" class="text-xl font-semibold text-accent">+229 01 67 15 39 74</a>
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-text-secondary">Envoyez-nous un message WhatsApp</p>
-                            <a href="https://wa.me/22967153974" target="_blank" class="text-xl font-semibold text-accent">+229 67 15 39 74</a>
+                        
+                        <div class="flex items-center space-x-4 p-4 bg-accent/10 rounded-xl">
+                            <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fab fa-whatsapp text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-text-secondary">Envoyez-nous un message WhatsApp</p>
+                                <a href="https://wa.me/22967153974" target="_blank" class="text-xl font-semibold text-accent">+229 67 15 39 74</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -297,43 +430,60 @@
         </div>
 
         <!-- Modal de succès (caché par défaut) -->
-        <div id="successModal" class="fixed inset-0 bg-text-primary/50 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="glass-morphism rounded-[24px] p-8 sm:p-12 max-w-lg w-full mx-4 shadow-xl transform transition-transform duration-300 scale-95 relative">
-                <!-- En-tête du modal -->
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl sm:text-title font-semibold text-accent">Inscription confirmée !</h2>
-                    <button onclick="fermerModal(document.getElementById('successModal'))" class="text-text-secondary hover:text-text-primary transition-colors p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                
-                <div class="space-y-6">
-                    <div class="flex justify-center mb-6">
-                        <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-check-circle text-4xl text-accent"></i>
-                        </div>
+        <div id="successModal" class="modal-overlay opacity-0 pointer-events-none">
+            <div class="modal-content">
+                <div class="modal-content-inner glass-morphism">
+                    <!-- En-tête du modal -->
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl sm:text-title font-semibold text-accent">Inscription confirmée !</h2>
+                        <button onclick="fermerModal(document.getElementById('successModal'))" class="text-text-secondary hover:text-text-primary transition-colors p-2 bg-gray-100 rounded-full hover:bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
                     
-                    <p id="successMessage" class="text-text-secondary text-lg text-center"></p>
-                    
-                    <div class="bg-accent/10 p-6 rounded-xl">
-                        <h3 class="font-semibold mb-2">Prochaines étapes :</h3>
-                        <ul class="text-text-secondary space-y-2">
-                            <li class="flex items-start">
-                                <i class="fas fa-envelope text-accent mt-1 mr-2"></i>
-                                <span>Un email de confirmation vous a été envoyé avec tous les détails</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-calendar-check text-accent mt-1 mr-2"></i>
-                                <span>Nous vous attendons au créneau choisi</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-phone text-accent mt-1 mr-2"></i>
-                                <span>Pour toute question, contactez-nous au <a href="tel:+2290167153974" class="font-semibold text-accent">+229 01 67 15 39 74</a></span>
-                            </li>
-                        </ul>
+                    <div class="space-y-6">
+                        <div class="flex justify-center mb-6">
+                            <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check-circle text-4xl text-accent"></i>
+                            </div>
+                        </div>
+                        
+                        <p id="successMessage" class="text-text-secondary text-lg text-center"></p>
+                        
+                        <div class="bg-accent/10 p-6 rounded-xl">
+                            <h3 class="font-semibold mb-2">Prochaines étapes :</h3>
+                            <p class="text-sm text-text-secondary mb-4"><strong>Note importante :</strong> Veuillez noter ou capturer ces informations de paiement avant de fermer cette fenêtre.</p>
+                            <ul class="text-text-secondary space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-envelope text-accent mt-1 mr-2"></i>
+                                    <span>Un email de confirmation vous a été envoyé avec tous les détails</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-money-bill text-accent mt-1 mr-2"></i>
+                                    <span>Veuillez effectuer un paiement de <strong>5500 FCFA</strong> via Mobile Money au <strong>+229 64 36 20 49</strong></span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-image text-accent mt-1 mr-2"></i>
+                                    <span>Envoyez la capture d'écran de votre paiement par WhatsApp au <strong>+229 69 02 17 27</strong></span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-calendar-check text-accent mt-1 mr-2"></i>
+                                    <span>Nous vous attendons au créneau choisi</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-phone text-accent mt-1 mr-2"></i>
+                                    <span>Pour toute question, contactez-nous au <a href="tel:+2290167153974" class="font-semibold text-accent">+229 01 67 15 39 74</a></span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-8 text-center">
+                            <button onclick="fermerModal(document.getElementById('successModal'))" class="button-effect bg-accent text-surface-white px-8 py-3 rounded-full text-lg font-medium">
+                                J'ai noté les informations
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -367,7 +517,7 @@
                 
                 const option = document.createElement('option');
                 option.value = dateFormatee;
-                option.textContent = `Samedi ${dateFormatee} (18h-20h)`;
+                option.textContent = `Samedi ${dateFormatee} (17h-19h)`;
                 select.appendChild(option);
                 
                 // Passer au samedi suivant
@@ -377,26 +527,65 @@
         
         // Fonction pour ouvrir un modal
         function ouvrirModal(modal) {
+            // Sauvegarder la position de défilement avant de figer la page
+            window.modalScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+            
+            // Empêcher le défilement du body
+            document.body.classList.add('modal-open');
+            
+            // Appliquer la position de défilement comme offset pour éviter le saut
+            document.body.style.top = `-${window.modalScrollY}px`;
+            
+            // Résolution du problème iOS
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                document.documentElement.classList.add('ios-modal-open');
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+            }
+            
+            // Afficher le modal
             modal.classList.remove('opacity-0', 'pointer-events-none');
             modal.classList.add('opacity-100', 'pointer-events-auto');
             
-            const modalContent = modal.querySelector('.glass-morphism');
-            modalContent.classList.remove('scale-95');
-            modalContent.classList.add('scale-100');
+            // Animer le contenu
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.transform = 'scale(1)';
             
-            document.body.style.overflow = 'hidden'; // Empêcher le défilement
+            // Empêcher la propagation des clics à l'intérieur du modal
+            const modalInner = modal.querySelector('.modal-content-inner');
+            if (modalInner) {
+                modalInner.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
         }
         
         // Fonction pour fermer un modal
         function fermerModal(modal) {
+            // Cacher le modal
             modal.classList.remove('opacity-100', 'pointer-events-auto');
             modal.classList.add('opacity-0', 'pointer-events-none');
             
-            const modalContent = modal.querySelector('.glass-morphism');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
+            // Animer le contenu
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.transform = 'scale(0.95)';
             
-            document.body.style.overflow = ''; // Réactiver le défilement
+            // Réactiver le défilement du body (seulement s'il n'y a pas d'autres modals ouverts)
+            if (!document.querySelector('.modal-overlay.opacity-100')) {
+                document.body.classList.remove('modal-open');
+                
+                // Restaurer la position de défilement
+                const scrollY = window.modalScrollY;
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                window.scrollTo(0, scrollY);
+                
+                // Résoudre le problème iOS
+                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                    document.documentElement.classList.remove('ios-modal-open');
+                }
+            }
             
             // Réinitialiser le formulaire si c'est le modal d'inscription
             if (modal === document.getElementById('inscriptionModal')) {
@@ -416,10 +605,10 @@
             // Ouvrir le modal de succès
             ouvrirModal(successModal);
             
-            // Fermer automatiquement après 5 secondes
-            setTimeout(() => {
-                fermerModal(successModal);
-            }, 5000);
+            // Ne plus fermer automatiquement le modal après 5 secondes
+            // setTimeout(() => {
+            //     fermerModal(successModal);
+            // }, 5000);
         }
         
         // Gestion des modals
@@ -469,14 +658,23 @@
             
             // Fermer les modals en cliquant à l'extérieur
             inscriptionModal.addEventListener('click', function(e) {
+                // Vérifier si le clic est sur l'overlay et non sur le contenu
                 if (e.target === inscriptionModal) {
                     fermerModal(inscriptionModal);
                 }
             });
             
             infoModal.addEventListener('click', function(e) {
+                // Vérifier si le clic est sur l'overlay et non sur le contenu
                 if (e.target === infoModal) {
                     fermerModal(infoModal);
+                }
+            });
+            
+            successModal.addEventListener('click', function(e) {
+                // Vérifier si le clic est sur l'overlay et non sur le contenu
+                if (e.target === successModal) {
+                    fermerModal(successModal);
                 }
             });
             
@@ -485,7 +683,7 @@
                 e.preventDefault();
                 
                 // URL du script Google Apps Script déployé
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbxGwuw8xeK7Zva2G2UuLD33-7jH5iAIHPXhyPF3fbnNyR8ELMLrqoqESW4q3P6xeSiEbA/exec';
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbz0q7mQ41ij5vHL5Xpnh3LsOZbF0GP16OzgyA6FmBtzRuLPD_e89dC0wps6Ie751t6Qig/exec';
                 
                 // Récupérer les données du formulaire
                 const formData = new FormData(form);
@@ -537,6 +735,16 @@
                     // Afficher un message d'erreur
                     alert('Une erreur s\'est produite lors de l\'inscription. Veuillez réessayer.');
                 });
+            });
+
+            // Ajoute un gestionnaire d'événements pour la touche Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const openModals = document.querySelectorAll('.modal-overlay.opacity-100');
+                    if (openModals.length > 0) {
+                        fermerModal(openModals[openModals.length - 1]);
+                    }
+                }
             });
         });
     </script>
