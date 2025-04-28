@@ -309,7 +309,7 @@ function envoyerEmailConfirmation(data) {
                 
                 <div class="details" style="background-color: #e9f7ec; padding: 18px; border-radius: 6px; margin: 20px 0;">
                     <h3 style="margin-top: 0; color: #34C759;">Rappel des informations de paiement :</h3>
-                    <p><strong>Prix :</strong> 5500 FCFA par séance</p>
+                    // <p><strong>Prix :</strong> 5500 FCFA par séance</p>
                     <p><strong>Méthode de paiement :</strong> Mobile Money</p>
                     <p><strong>Numéro Mobile Money :</strong> +229 0169156124</p>
                     <p><strong>Note importante :</strong> Veuillez envoyer la capture d'écran de votre paiement par WhatsApp au <strong>+229 69 02 17 27</strong> au moins 24h avant votre séance.</p>
