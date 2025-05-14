@@ -328,7 +328,7 @@
                 <div class="bg-white/50 p-8 rounded-xl border border-surface-light/80 hover-lift">
                     <div class="text-center mb-6">
                         <h3 class="text-xl font-semibold mb-3">À la séance</h3>
-                        <div class="text-4xl font-bold text-accent">2.500 FCFA</div>
+                        <div class="text-4xl font-bold text-accent">3000 FCFA</div>
                         <p class="text-sm text-text-secondary mt-2">par séance</p>
                     </div>
                     <ul class="space-y-3 text-sm text-text-secondary">
@@ -360,7 +360,7 @@
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-check text-accent mr-3"></i>
-                            Économisez 2.000 FCFA
+                            Économisez 2 000 FCFA
                         </li>
                     </ul>
                 </div>
@@ -685,15 +685,15 @@
                 
                 if (nombreSeances === 4) {
                     prixTotalElement.textContent = '10.000 FCFA';
-                    prixInfoElement.textContent = 'Forfait mensuel (4 séances) - Économisez 2.000 FCFA';
+                    prixInfoElement.textContent = 'Forfait mensuel (4 séances) - Économisez 2 000 FCFA';
                     prixInfoElement.className = 'text-sm text-accent mt-2';
                     prixInfoModalElement.innerHTML = '<span class="font-semibold">10.000 FCFA</span> pour 4 séances (forfait mensuel)';
                 } else if (nombreSeances > 0) {
-                    const prix = nombreSeances * 2500;
+                    const prix = nombreSeances * 3000;
                     prixTotalElement.textContent = `${prix.toLocaleString()} FCFA`;
                     prixInfoElement.textContent = `Prix à la séance (${nombreSeances} séance${nombreSeances > 1 ? 's' : ''})`;
                     prixInfoElement.className = 'text-sm text-text-secondary mt-2';
-                    prixInfoModalElement.innerHTML = `<span class="font-semibold">${prix.toLocaleString()} FCFA</span> pour ${nombreSeances} séance${nombreSeances > 1 ? 's' : ''} (2.500 FCFA par séance)`;
+                    prixInfoModalElement.innerHTML = `<span class="font-semibold">${prix.toLocaleString()} FCFA</span> pour ${nombreSeances} séance${nombreSeances > 1 ? 's' : ''} (3000 FCFA par séance)`;
                 } else {
                     prixTotalElement.textContent = '0 FCFA';
                     prixInfoElement.textContent = '';
@@ -888,11 +888,11 @@
                 if (nombreSeances === 4) {
                     montantAPayer = "10000";
                 } else {
-                    montantAPayer = (nombreSeances * 2500).toString();
+                    montantAPayer = (nombreSeances * 3000).toString();
                 }
                 
                 // Format d'affichage du prix
-                const prixAffichage = nombreSeances === 4 ? '10.000 FCFA' : `${(nombreSeances * 2500).toLocaleString()} FCFA`;
+                const prixAffichage = nombreSeances === 4 ? '10.000 FCFA' : `${(nombreSeances * 3000).toLocaleString()} FCFA`;
                 
                 // URL du script Google Apps Script déployé
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbzqQzbXaqzzya-2FVdKGbCF-SqQv5ahJjDFchtte0fiAq6gu1byN-WqU4BtqR4BWeq9qg/exec';
@@ -900,12 +900,33 @@
                 // Récupérer les données du formulaire
                 const formData = new FormData(form);
                 
+                // Supprimer les anciennes entrées "creneau" de formData
+                // car FormData ne permet pas la suppression directe, nous allons créer un nouveau FormData
+                const newFormData = new FormData();
+                
+                // Copier toutes les entrées sauf "creneau"
+                for (const [key, value] of formData.entries()) {
+                    if (key !== 'creneau') {
+                        newFormData.append(key, value);
+                    }
+                }
+                
+                // Extraire les dates des créneaux sélectionnés et les joindre en une seule chaîne
+                const creneauxDates = [];
+                selectedCreneaux.forEach(checkbox => {
+                    creneauxDates.push(checkbox.value);
+                });
+                const creneauxFormates = creneauxDates.join(', ');
+                
+                // Ajouter cette chaîne au formData
+                newFormData.append('creneau', creneauxFormates);
+                
                 // Ajouter la date d'inscription, le prix et le statut de paiement
                 const now = new Date();
-                formData.append('dateInscription', now.toLocaleString('fr-FR'));
-                formData.append('montantAPayer', montantAPayer);
-                formData.append('statutPaiement', 'En attente');
-                formData.append('sendEmail', 'true');
+                newFormData.append('dateInscription', now.toLocaleString('fr-FR'));
+                newFormData.append('montantAPayer', montantAPayer);
+                newFormData.append('statutPaiement', 'En attente');
+                newFormData.append('sendEmail', 'true');
                 
                 // Désactiver le bouton pendant l'envoi
                 const submitBtn = form.querySelector('button[type="submit"]');
@@ -914,7 +935,7 @@
                 
                 // Convertir FormData en URLSearchParams
                 const searchParams = new URLSearchParams();
-                for (const [key, value] of formData.entries()) {
+                for (const [key, value] of newFormData.entries()) {
                     searchParams.append(key, value);
                 }
                 
@@ -933,10 +954,9 @@
                     fermerModal(inscriptionModal);
                     
                     // Afficher le message de succès avec le prix
-                    const prenom = formData.get('prenom');
-                    const creneaux = Array.from(formData.getAll('creneau')).join(', ');
+                    const prenom = newFormData.get('prenom');
                     afficherMessageSucces(
-                        `Merci ${prenom} ! Votre inscription pour les séances du ${creneaux} a été confirmée. Un email de confirmation vous a été envoyé.`,
+                        `Merci ${prenom} ! Votre inscription pour les séances du ${creneauxFormates} a été confirmée. Un email de confirmation vous a été envoyé.`,
                         prixAffichage
                     );
                 })
