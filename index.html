@@ -118,8 +118,8 @@
         .modal-content {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            max-height: 85vh; /* Légèrement réduit pour s'assurer qu'il y a un espace visible autour */
+            max-width: 900px;
+            max-height: 90vh;
             margin: 20px;
             z-index: 10000;
             transform: scale(0.95);
@@ -136,16 +136,16 @@
         .modal-content-inner {
             border-radius: 24px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-            overflow-y: auto; /* Seul le contenu du modal peut défiler */
-            max-height: 100%; /* Prendre toute la hauteur disponible */
-            padding: 20px 24px;
-            background-color: rgba(255, 255, 255, 0.95); /* Fond plus opaque pour meilleur contraste */
+            overflow-y: auto;
+            max-height: 100%;
+            padding: 32px 40px;
+            background-color: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @media (min-width: 640px) {
             .modal-content-inner {
-                padding: 28px 32px;
+                padding: 40px 48px;
             }
         }
 
@@ -160,6 +160,17 @@
         @supports (-webkit-overflow-scrolling: touch) {
             .modal-content-inner {
                 -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Ajustement de la grille des créneaux pour le modal plus large */
+        #creneauxContainer {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (min-width: 768px) {
+            #creneauxContainer {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
@@ -311,13 +322,126 @@
 
         <!-- Call to Action -->
         <div class="text-center glass-morphism rounded-[20px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16">
-            <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-10">Prêt à transformer votre communication ?</h2>
+            <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-6 sm:mb-10">Nos Tarifs</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+                <!-- Prix à la séance -->
+                <div class="bg-white/50 p-8 rounded-xl border border-surface-light/80 hover-lift">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-semibold mb-3">À la séance</h3>
+                        <div class="text-4xl font-bold text-accent">2.500 FCFA</div>
+                        <p class="text-sm text-text-secondary mt-2">par séance</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-text-secondary">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-3"></i>
+                            Flexibilité maximale
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-3"></i>
+                            Paiement à la séance
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Prix mensuel -->
+                <div class="bg-accent/10 p-8 rounded-xl border border-accent/20 relative hover-lift">
+                    <div class="absolute -top-3 -right-3 bg-accent text-white text-sm font-semibold px-4 py-1 rounded-full">
+                        Économisez 20%
+                    </div>
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-semibold mb-3">Forfait mensuel</h3>
+                        <div class="text-4xl font-bold text-accent">10.000 FCFA</div>
+                        <p class="text-sm text-text-secondary mt-2">pour 4 séances</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-text-secondary">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-3"></i>
+                            4 séances par mois
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-accent mr-3"></i>
+                            Économisez 2.000 FCFA
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <button class="button-effect bg-accent text-surface-white px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg font-medium w-full sm:w-auto">
                     S'inscrire maintenant
                 </button>
                 <button class="button-effect bg-surface-white text-accent px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg font-medium border border-accent/10 hover:bg-accent-light w-full sm:w-auto">
                     En savoir plus
+                </button>
+            </div>
+        </div>
+
+        <!-- Témoignages -->
+        <div class="glass-morphism rounded-[20px] sm:rounded-[32px] p-8 sm:p-12 lg:p-16">
+            <h2 class="text-2xl sm:text-3xl lg:text-title font-semibold mb-12 text-center">Ce que disent nos apprenants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Témoignage 1 -->
+                <div class="bg-white/50 p-6 rounded-xl border border-surface-light/80 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-accent font-semibold">AK</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Aminata</h4>
+                            <p class="text-sm text-text-secondary">Étudiante</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary">"Les sessions sont très interactives et l'ambiance est décontractée. J'ai gagné beaucoup en confiance pour m'exprimer en anglais."</p>
+                </div>
+
+                <!-- Témoignage 2 -->
+                <div class="bg-white/50 p-6 rounded-xl border border-surface-light/80 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-accent font-semibold">MK</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Moussa</h4>
+                            <p class="text-sm text-text-secondary">Entrepreneur</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary">"Le format des sessions est parfait pour les professionnels. J'ai pu améliorer mon anglais professionnel tout en gardant mon rythme de travail."</p>
+                </div>
+
+                <!-- Témoignage 3 -->
+                <div class="bg-white/50 p-6 rounded-xl border border-surface-light/80 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-accent font-semibold">FD</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Mr Emmanuel M.</h4>
+                            <p class="text-sm text-text-secondary">Professeure</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary">"L'approche pédagogique est excellente. Les exercices pratiques et les discussions de groupe sont très efficaces."</p>
+                </div>
+
+                <!-- Témoignage 4 -->
+                <div class="bg-white/50 p-6 rounded-xl border border-surface-light/80 hover-lift">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-accent font-semibold">IB</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Jean S.</h4>
+                            <p class="text-sm text-text-secondary">Ingénieur</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary">"Les sessions sont bien structurées et le groupe est motivant. J'ai fait des progrès significatifs en seulement quelques semaines."</p>
+                </div>
+            </div>
+
+            <!-- CTA après témoignages -->
+            <div class="text-center mt-12">
+                <h3 class="text-xl sm:text-2xl font-semibold mb-6">Rejoignez notre communauté d'apprenants</h3>
+                <button class="button-effect bg-accent text-surface-white px-8 sm:px-10 py-4 sm:py-5 rounded-full text-lg font-medium">
+                    Commencer maintenant
                 </button>
             </div>
         </div>
@@ -337,45 +461,62 @@
                     </div>
                     
                     <!-- Formulaire d'inscription -->
-                    <form id="inscriptionForm" class="space-y-4 sm:space-y-6">
-                        <div>
-                            <label for="prenom" class="block text-text-secondary text-sm mb-2">Prénom</label>
-                            <input type="text" id="prenom" name="prenom" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                    <form id="inscriptionForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="prenom" class="block text-text-secondary text-sm mb-2">Prénom</label>
+                                <input type="text" id="prenom" name="prenom" required
+                                    class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                            </div>
+                            
+                            <div>
+                                <label for="nom" class="block text-text-secondary text-sm mb-2">Nom</label>
+                                <input type="text" id="nom" name="nom" required
+                                    class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-text-secondary text-sm mb-2">Email</label>
+                                <input type="email" id="email" name="email" required
+                                    class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                            </div>
+                            
+                            <div>
+                                <label for="whatsapp" class="block text-text-secondary text-sm mb-2">Numéro WhatsApp (avec indicatif)</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: +229 67 15 39 74" required
+                                    class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                            </div>
                         </div>
                         
                         <div>
-                            <label for="nom" class="block text-text-secondary text-sm mb-2">Nom</label>
-                            <input type="text" id="nom" name="nom" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                            <label class="block text-text-secondary text-sm mb-3">Choisir vos séances (17h-19h)</label>
+                            <div class="bg-white/50 p-6 rounded-xl border border-surface-light/80">
+                                <p class="text-sm text-text-secondary mb-4">Sélectionnez vos samedis parmi les dates disponibles :</p>
+                                <div id="creneauxContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                                    <!-- Les créneaux seront générés ici dynamiquement -->
+                                </div>
+                                <div class="mt-4 p-4 bg-accent/5 rounded-xl">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-text-secondary">Prix total :</span>
+                                        <span id="prixTotal" class="text-xl font-semibold text-accent">0 FCFA</span>
+                                    </div>
+                                    <p id="prixInfo" class="text-sm text-text-secondary mt-2"></p>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div>
-                            <label for="email" class="block text-text-secondary text-sm mb-2">Email</label>
-                            <input type="email" id="email" name="email" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
+                        <div class="bg-accent/10 p-6 rounded-xl">
+                            <h3 class="font-semibold mb-3">Information de paiement :</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p id="prixInfoModal" class="text-text-secondary text-sm mb-2">Sélectionnez vos séances pour voir le prix</p>
+                                    <p class="text-text-secondary text-sm">À payer par Mobile Money au <span class="font-semibold">+229 0169156124</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-text-secondary text-sm">Envoyez la preuve de paiement par WhatsApp au <span class="font-semibold">+229 69 02 17 27</span></p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div>
-                            <label for="whatsapp" class="block text-text-secondary text-sm mb-2">Numéro WhatsApp (avec indicatif)</label>
-                            <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex: +229 67 15 39 74" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition">
-                        </div>
-                        
-                        <div>
-                            <label for="creneau" class="block text-text-secondary text-sm mb-2">Choisir votre créneau</label>
-                            <select id="creneau" name="creneau" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/50 border border-surface-light/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition appearance-none">
-                                <option value="" disabled selected>Sélectionnez un samedi (17h-19h)</option>
-                            </select>
-                        </div>
-                        
-                        <!-- <div class="bg-accent/10 p-4 rounded-xl mb-4">
-                            <h3 class="font-semibold mb-2 text-sm">Information de paiement :</h3>
-                            <p class="text-text-secondary text-sm mb-2">Prix unique: <span class="font-semibold">5500 FCFA</span> par séance</p>
-                            <p class="text-text-secondary text-sm mb-2">À payer par Mobile Money au <span class="font-semibold">+229 0169156124</span></p>
-                            <p class="text-text-secondary text-sm">Envoyez la preuve de paiement par WhatsApp au <span class="font-semibold">+229 69 02 17 27</span></p>
-                        </div> -->
                         
                         <div class="pt-4">
                             <button type="submit"
@@ -401,7 +542,7 @@
                             </svg>
                         </button>
                     </div>
-                    
+
                     <div class="space-y-6">
                         <p class="text-text-secondary text-lg">Pour plus d'informations sur nos programmes, n'hésitez pas à nous contacter :</p>
                         
@@ -442,7 +583,7 @@
                             </svg>
                         </button>
                     </div>
-                    
+
                     <div class="space-y-6">
                         <div class="flex justify-center mb-6">
                             <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center">
@@ -460,18 +601,18 @@
                                     <i class="fas fa-envelope text-accent mt-1 mr-2"></i>
                                     <span>Un email de confirmation vous a été envoyé avec tous les détails</span>
                                 </li>
-                                <!-- <li class="flex items-start">
+                                <li class="flex items-start">
                                     <i class="fas fa-money-bill text-accent mt-1 mr-2"></i>
-                                    <span>Veuillez effectuer un paiement de <strong>5500 FCFA</strong> via Mobile Money au <strong>+229 0169156124</strong></span>
-                                </li> -->
-                                <!-- <li class="flex items-start">
+                                    <span>Veuillez effectuer un paiement de <strong>10.000 FCFA</strong> via Mobile Money au <strong>+229 0169156124</strong></span>
+                                </li>
+                                <li class="flex items-start">
                                     <i class="fas fa-image text-accent mt-1 mr-2"></i>
                                     <span>Envoyez la capture d'écran de votre paiement par WhatsApp au <strong>+229 69 02 17 27</strong></span>
-                                </li> -->
-                                <!-- <li class="flex items-start">
+                                </li>
+                                <li class="flex items-start">
                                     <i class="fas fa-calendar-check text-accent mt-1 mr-2"></i>
-                                    <span>Nous vous attendons au créneau choisi</span>
-                                </li> -->
+                                    <span>Nous vous attendons aux créneaux choisis</span>
+                                </li>
                                 <li class="flex items-start">
                                     <i class="fas fa-phone text-accent mt-1 mr-2"></i>
                                     <span>Pour toute question, contactez-nous au <a href="tel:+2290167153974" class="font-semibold text-accent">+229 01 67 15 39 74</a></span>
@@ -499,7 +640,7 @@
     <script>
         // Fonction pour générer les dates des samedis pour les 8 prochaines semaines
         function genererCreneaux() {
-            const select = document.getElementById('creneau');
+            const container = document.getElementById('creneauxContainer');
             const today = new Date();
             const nombreSemaines = 8;
             
@@ -515,16 +656,66 @@
                 const annee = date.getFullYear();
                 const dateFormatee = `${jour}/${mois}/${annee}`;
                 
-                const option = document.createElement('option');
-                option.value = dateFormatee;
-                option.textContent = `Samedi ${dateFormatee} (17h-19h)`;
-                select.appendChild(option);
+                const creneauDiv = document.createElement('div');
+                creneauDiv.className = 'relative';
+                creneauDiv.innerHTML = `
+                    <input type="checkbox" id="creneau_${i}" name="creneau" value="${dateFormatee}" class="hidden peer" />
+                    <label for="creneau_${i}" class="block p-3 text-center bg-white/50 border border-surface-light/80 rounded-xl cursor-pointer peer-checked:bg-accent/10 peer-checked:border-accent/20 peer-checked:text-accent hover:bg-accent/5 transition-all">
+                        <div class="font-medium">Samedi ${dateFormatee}</div>
+                        <div class="text-sm text-text-secondary">17h-19h</div>
+                    </label>
+                `;
+                container.appendChild(creneauDiv);
                 
                 // Passer au samedi suivant
                 nextSaturday.setDate(nextSaturday.getDate() + 7);
             }
         }
-        
+
+        // Fonction pour limiter la sélection à 4 créneaux et calculer le prix
+        function limiterSelectionCreneaux() {
+            const checkboxes = document.querySelectorAll('input[name="creneau"]');
+            const prixTotalElement = document.getElementById('prixTotal');
+            const prixInfoElement = document.getElementById('prixInfo');
+            const prixInfoModalElement = document.getElementById('prixInfoModal');
+            
+            function updatePrix() {
+                const checkedBoxes = document.querySelectorAll('input[name="creneau"]:checked');
+                const nombreSeances = checkedBoxes.length;
+                
+                if (nombreSeances === 4) {
+                    prixTotalElement.textContent = '10.000 FCFA';
+                    prixInfoElement.textContent = 'Forfait mensuel (4 séances) - Économisez 2.000 FCFA';
+                    prixInfoElement.className = 'text-sm text-accent mt-2';
+                    prixInfoModalElement.innerHTML = '<span class="font-semibold">10.000 FCFA</span> pour 4 séances (forfait mensuel)';
+                } else if (nombreSeances > 0) {
+                    const prix = nombreSeances * 2500;
+                    prixTotalElement.textContent = `${prix.toLocaleString()} FCFA`;
+                    prixInfoElement.textContent = `Prix à la séance (${nombreSeances} séance${nombreSeances > 1 ? 's' : ''})`;
+                    prixInfoElement.className = 'text-sm text-text-secondary mt-2';
+                    prixInfoModalElement.innerHTML = `<span class="font-semibold">${prix.toLocaleString()} FCFA</span> pour ${nombreSeances} séance${nombreSeances > 1 ? 's' : ''} (2.500 FCFA par séance)`;
+                } else {
+                    prixTotalElement.textContent = '0 FCFA';
+                    prixInfoElement.textContent = '';
+                    prixInfoModalElement.textContent = 'Sélectionnez vos séances pour voir le prix';
+                }
+            }
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checkedBoxes = document.querySelectorAll('input[name="creneau"]:checked');
+                    if (checkedBoxes.length > 4) {
+                        this.checked = false;
+                        alert('Vous ne pouvez sélectionner que 4 séances maximum.');
+                    }
+                    updatePrix();
+                });
+            });
+            
+            // Initialiser le prix
+            updatePrix();
+        }
+
         // Fonction pour ouvrir un modal
         function ouvrirModal(modal) {
             // Sauvegarder la position de défilement avant de figer la page
@@ -594,7 +785,7 @@
         }
         
         // Fonction pour afficher un message de succès
-        function afficherMessageSucces(message) {
+        function afficherMessageSucces(message, prix) {
             const successModal = document.getElementById('successModal');
             const messageElement = document.getElementById('successMessage');
             
@@ -602,19 +793,21 @@
                 messageElement.textContent = message;
             }
             
+            // Mettre à jour le montant dans le modal de succès
+            const montantElement = successModal.querySelector('li:nth-child(2) span');
+            if (montantElement) {
+                montantElement.innerHTML = `Veuillez effectuer un paiement de <strong>${prix}</strong> via Mobile Money au <strong>+229 0169156124</strong>`;
+            }
+            
             // Ouvrir le modal de succès
             ouvrirModal(successModal);
-            
-            // Ne plus fermer automatiquement le modal après 5 secondes
-            // setTimeout(() => {
-            //     fermerModal(successModal);
-            // }, 5000);
         }
         
         // Gestion des modals
         document.addEventListener('DOMContentLoaded', function() {
             // Générer les créneaux disponibles
             genererCreneaux();
+            limiterSelectionCreneaux();
             
             // Références aux éléments du DOM
             const inscriptionBtns = document.querySelectorAll('button');
@@ -682,17 +875,36 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                // Vérifier le nombre de séances sélectionnées
+                const selectedCreneaux = document.querySelectorAll('input[name="creneau"]:checked');
+                if (selectedCreneaux.length === 0) {
+                    alert('Veuillez sélectionner au moins une séance.');
+                    return;
+                }
+                
+                // Calculer le prix
+                const nombreSeances = selectedCreneaux.length;
+                let montantAPayer;
+                if (nombreSeances === 4) {
+                    montantAPayer = "10000";
+                } else {
+                    montantAPayer = (nombreSeances * 2500).toString();
+                }
+                
+                // Format d'affichage du prix
+                const prixAffichage = nombreSeances === 4 ? '10.000 FCFA' : `${(nombreSeances * 2500).toLocaleString()} FCFA`;
+                
                 // URL du script Google Apps Script déployé
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbxzJLKGl8_GElHj8FypHODeNClPXfWwZpRoRFa6dfJB4QUGoE0bXuP69gM-Xvx4VqhIvw/exec';
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbzqQzbXaqzzya-2FVdKGbCF-SqQv5ahJjDFchtte0fiAq6gu1byN-WqU4BtqR4BWeq9qg/exec';
                 
                 // Récupérer les données du formulaire
                 const formData = new FormData(form);
                 
-                // Ajouter la date d'inscription
+                // Ajouter la date d'inscription, le prix et le statut de paiement
                 const now = new Date();
                 formData.append('dateInscription', now.toLocaleString('fr-FR'));
-                
-                // Ajouter un flag pour indiquer qu'un email doit être envoyé
+                formData.append('montantAPayer', montantAPayer);
+                formData.append('statutPaiement', 'En attente');
                 formData.append('sendEmail', 'true');
                 
                 // Désactiver le bouton pendant l'envoi
@@ -700,7 +912,7 @@
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Envoi en cours...';
                 
-                // Convertir FormData en URLSearchParams (format plus fiable pour Google Apps Script)
+                // Convertir FormData en URLSearchParams
                 const searchParams = new URLSearchParams();
                 for (const [key, value] of formData.entries()) {
                     searchParams.append(key, value);
@@ -720,10 +932,13 @@
                     // Fermer le modal d'inscription
                     fermerModal(inscriptionModal);
                     
-                    // Afficher le message de succès
+                    // Afficher le message de succès avec le prix
                     const prenom = formData.get('prenom');
-                    const creneau = formData.get('creneau');
-                    afficherMessageSucces(`Merci ${prenom} ! Votre inscription pour le samedi ${creneau} a été confirmée. Un email de confirmation vous a été envoyé.`);
+                    const creneaux = Array.from(formData.getAll('creneau')).join(', ');
+                    afficherMessageSucces(
+                        `Merci ${prenom} ! Votre inscription pour les séances du ${creneaux} a été confirmée. Un email de confirmation vous a été envoyé.`,
+                        prixAffichage
+                    );
                 })
                 .catch(error => {
                     console.error('Erreur!', error.message);
